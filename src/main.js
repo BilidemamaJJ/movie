@@ -4,6 +4,24 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+// axios
+// import axios from 'axios'
+
+// axios.defaults.baseURL = "https://m.maizuo.com/"
+
+// axios.interceptors.request.use(function(config){
+//     config.headers = {
+//         "X-Client-Info": '{"a":"3000","ch":"1002","v":"5.0.4","e":"1602242727404225142030338","bc":"110100"}',
+//         "X-Host": "mall.film-ticket.film.list"
+
+//     }
+//     // 返回配置
+//     return config
+// },function(err){
+//     // 对错误的处理
+// })
+// axios.get("gateway?cityId=110100&pageNum=1&pageSize=10&type=2&k=4158470")
+
 new Vue({
   router,
   render: h => h(App)
