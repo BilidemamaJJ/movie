@@ -1,28 +1,36 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+// const load = require('@/assets/timg.gif')
+// import load from '@/assets/timg.gif'
 
 Vue.config.productionTip = false
 
-// axios
-// import axios from 'axios'
+// 使用懒加载
+import VueLazyload from 'vue-lazyload'
+Vue.use(VueLazyload, {
+    loading: '/timg.gif',
+});
 
-// axios.defaults.baseURL = "https://m.maizuo.com/"
+// 使用element UI
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
 
-// axios.interceptors.request.use(function(config){
-//     config.headers = {
-//         "X-Client-Info": '{"a":"3000","ch":"1002","v":"5.0.4","e":"1602242727404225142030338","bc":"110100"}',
-//         "X-Host": "mall.film-ticket.film.list"
+// 定义事件总线
+Vue.prototype.eventBus = new Vue()
 
-//     }
-//     // 返回配置
-//     return config
-// },function(err){
-//     // 对错误的处理
-// })
-// axios.get("gateway?cityId=110100&pageNum=1&pageSize=10&type=2&k=4158470")
+//导入vuex
+import store from "@/store/vuex"
+
+// 同步localStorage数据到Vuex
+let _token = localStorage.getItem('_token')
+if(_token){
+    store.commit("updateToken",_token)
+}
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

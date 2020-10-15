@@ -1,5 +1,10 @@
 <template>
     <div class="nav">
+        <div class="topBox">
+            <router-link to="/city" tag="div">
+                {{city}} <span>&lt;</span>
+            </router-link>
+        </div>
         <ul>
             <router-link to="/film/nowplaying" tag="li" active-class="active">
                 <span>正在热映</span>
@@ -11,12 +16,29 @@
     </div>
 </template>
 
+<script>
+import {mapState} from 'vuex'
+export default {
+    computed: {
+        ...mapState(['count','city']) // 扩展运算符...
+    },
+}
+</script>
+
 <style lang="scss" scoped>
     .nav {
     width: 100%;
-    height: 50px;
+    // height: 80px;
     line-height: 50px;
     border-bottom: 1px solid #ccc;
+    .topBox{
+        padding-left: 10px;
+        height: 30px;
+        font-size: 14px;
+        span{
+            font-size: 8px;
+        }
+    }
     ul {
         display: flex;
         text-align: center;

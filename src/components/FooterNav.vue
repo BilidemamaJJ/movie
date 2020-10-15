@@ -42,7 +42,7 @@ export default {
         li {
             margin-top: 5px;
             flex: 1;
-            height: 43px;
+            height: 50px;
             &.active {
                 color: #fe5100;
             }
