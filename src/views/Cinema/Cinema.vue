@@ -2,39 +2,56 @@
     <div>
         <Loading v-if="loading"></Loading>
         <CinemaListTopNav class="fixed"></CinemaListTopNav>
-        <ul class="cinemalists">
-            <li v-for="(item,index) in cinemas" :key="index" class="li">
+        <div class="scroll" :style="{height:height + 'px'}">
+            <ul class="cinemalists">
+            <li v-for="(item,index) in cinemas" :key="index" :class="{bgcolor:i === index}" @click="clickli(item,index)">
                 <div class="nap">
                     <span class="name">{{item.name}}</span>
                     <span class="price">￥<i>{{item.lowPrice / 100}}</i>起</span>
                 </div>
                 <div class="loca">
                     <span class="address">{{item.address}}</span>
-                    <!-- <span class="distance">{ { item.Distance } } km</span> -->
+                    <span class="distance">{{item.Distance | parseDistance}} km</span>
                 </div>
             </li>
-        </ul>
+            </ul>
+        </div>
+        
     </div>
 </template>
 
 <script>
+import BScroll from "better-scroll"
 import CinemaListTopNav from "@/components/CinemaListTopNav"
 import {cinemaData} from "@/api/api"
 import Loading from "@/components/Loading"
+import {mapState} from 'vuex'
+
 // import loaction from "https://api.i-lynn.cn/poi?location=121.49124909851835,31.379142696763655"
 export default {
+    computed: {
+        ...mapState(['count','city','cityId']) // 扩展运算符...
+    },
     data() {
         return {
             loading:true,
             cinemas:[],
+            height: 0,
+            bs: null,
+            i:-1,
+            citySetId:''
         }
     },
     components:{
         CinemaListTopNav,
         Loading,
     },
+    created() {
+        this.height = document.documentElement.clientHeight - 55
+        
+    },
     async mounted() {
-        let ret = await cinemaData()
+        let ret = await cinemaData(this.$store.state.cityId)
         this.cinemas = ret.data.data.cinemas
 
         if(this.cinemas.length > 0){
@@ -43,34 +60,26 @@ export default {
             this.loading = true
         }
     },
-    // beforeCreate() {
-    //     if(this.cinemas.length > 0){
-    //         this.loading = false
-    //     }else{
-    //         this.loading = true
-    //     }
-    // },
-    // filters:{
-    //     parseDistance: function(value){
-    //         return Math.ceil(value*100)/100
-    //     }
-    // },
+    updated() {
+        this.bs = new BScroll('.scroll',{
+            // 激活上滑的监听事件
+            pullUpLoad: true,
+            // 激活下滑的监听事件
+            // pullDownRefresh: true,
+            // 默认情况下使用bs后，它会禁止浏览器的点击事件
+            click: true,
+        })
+    },
+    filters:{
+        parseDistance: function(value){
+            return Math.ceil(value*100)/100
+        }
+    },
     
     methods: {
-        // location: async function(){
-        //     let trap = await cinemaData()
-        // }
-        
-        // update:function (position) {
-        //     window.addEventListener('load', function() {
-        //         if (navigator.geolocation) {
-        //         navigator.geolocation.watchPosition(update);
-        //     }
-        //     }, false)
-        //     var lat = position.coords.latitude;
-        //     var lng = position.coords.longitude;
-        //     return {lat,lng}
-        // }
+        clickli: function(item,index){
+            this.i = index;
+        }
     },
 }
 </script>
@@ -80,10 +89,11 @@ export default {
         position: fixed;
         top: 0;
         background: #fff;
+        z-index: 123;
     }
     .cinemalists{
-        margin-top: 80px;
-        .li{
+        padding-top: 85px;
+        li{
             padding: 15px;
             display: flex;
             flex-direction: column;
@@ -119,6 +129,11 @@ export default {
                 }
             }
         }
+        .bgcolor {
+            background: #f5f5f5;
+        }
     }
-    
+    .scroll{
+        overflow: hidden;
+    }
 </style>

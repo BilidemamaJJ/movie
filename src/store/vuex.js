@@ -7,7 +7,8 @@ export default new Vuex.Store({
     state: {
         // state 存数据 取数据
         count: 0,
-        city: '未zhi',
+        city: '未知城市',
+        cityId:'110100',
     },
     mutations:{
         // 对数据的更改操作，修改作用
@@ -17,8 +18,9 @@ export default new Vuex.Store({
         add: function(state,step){
             state.count += step;
         },
-        setCity(state,cityName){
-            state.city = cityName
+        setCity(state,sub){
+            state.city = sub.name
+            state.cityId = sub.cityId
         },
         updateToken(state,_token){
             state._token = _token
@@ -27,7 +29,10 @@ export default new Vuex.Store({
         logoutDelToken(state){
             state._token  = '';
             window.localStorage.removeItem('_token')
-        }
+        },
+        // getCurrentPosition(state,position){
+
+        // }
     },
     actions:{
         // actions 中可以写异步方法

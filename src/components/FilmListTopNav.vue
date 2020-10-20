@@ -4,6 +4,9 @@
             <router-link to="/city" tag="div">
                 {{city}} <span>&lt;</span>
             </router-link>
+            <div class="title">
+                电影
+            </div>
         </div>
         <ul>
             <router-link to="/film/nowplaying" tag="li" active-class="active">
@@ -28,15 +31,23 @@ export default {
 <style lang="scss" scoped>
     .nav {
     width: 100%;
-    // height: 80px;
+    height: 80px;
     line-height: 50px;
     border-bottom: 1px solid #ccc;
+    // position: fixed;
     .topBox{
         padding-left: 10px;
         height: 30px;
         font-size: 14px;
         span{
             font-size: 8px;
+        }
+        .title{
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
         }
     }
     ul {

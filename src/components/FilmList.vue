@@ -1,6 +1,8 @@
 <template>
-    <div class="list scroll" :style="{height:height + 'px'}">
+    <div>
+        <!-- <FilmListTopNav class="fixed"></FilmListTopNav> -->
         <Loading v-if="loading"></Loading>
+        <div class="list scroll" :style="{height:height + 'px'}">
         <ul>
             <li class="item" v-for="(item,index) in data" :key="index" @click="goToDetail(item.filmId)">
                 <div class="left">
@@ -21,13 +23,17 @@
                 </div>
             </li>
         </ul>
+        </div>
     </div>
+    
 </template>
 
 <script>
 // 导入loading
 import Loading from "@/components/Loading"
 import BScroll from 'better-scroll'
+// import FilmListTopNav from "@/components/FilmListTopNav"
+
 // 导入请求方法
 import {playingNowListData,comingSoonListData} from '@/api/api'
 export default {
@@ -44,6 +50,7 @@ export default {
     props:["list","type"],
     components:{
         Loading,
+        // FilmListTopNav,
     },
     created() {
         // 将进入页面后需要将父传子的数据list转交给data
@@ -91,7 +98,7 @@ export default {
     },
     mounted() {
         // 获取可视高度
-        this.height = document.documentElement.clientHeight - 141
+        this.height = document.documentElement.clientHeight - 140
     },
     updated() {
         this.bs = new BScroll('.scroll',{
@@ -121,9 +128,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .fixed{
+        position: fixed;
+        top: 0;
+        background: #fff;
+        z-index: 123;
+    }
     .list{
-        margin-bottom: 60px;
-        // margin-top: 20px;
+        margin-top: 80px;
+        // margin-bottom: 60px;
         .item {
             padding-top: 20px;
             padding-bottom: 15px;

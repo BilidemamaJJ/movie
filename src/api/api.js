@@ -25,10 +25,10 @@ export const movieDetailData = (filmId)=>{
 }
 
 // 请求影院页
-export const cinemaData = ()=>{
+export const cinemaData = (cityId)=>{
     http.defaults.headers.info = 'cinema'
     http.defaults.headers.authorization = "";
-    return http.get(cinemaUrl)
+    return http.get(cinemaUrl + cityId)
 }
 
 // 请求城市列表
@@ -40,6 +40,7 @@ export const cityListData = async ()=>{
     let cityIndex = []; // 'A','B','C',...(完整的26个字母)
     let dataList = [];  // 城市信息
     let indexList = []; // 'A','B','C',...（经过筛选的字母）
+    let hotList = []; // 热门城市
 
     //for循环生成26个字母
     for (let i = 65; i <= 90; i++) {
@@ -58,7 +59,14 @@ export const cityListData = async ()=>{
             });
         }
     });
-    return Promise.resolve([dataList, indexList]);
+
+    for(var i=0;i<cities.length; i++) {
+        if(cities[i].isHot === 1){
+            hotList.push( cities[i]);
+        }
+    }
+
+    return Promise.resolve([dataList, indexList , hotList]);
 }
 
 // 请求登录

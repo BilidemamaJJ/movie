@@ -2,7 +2,7 @@
     <div class="nav">
         <div class="topBox">
             <router-link to="/city" tag="div" class="loca">
-                {{city}} <span>&lt;</span>
+                {{city}}<span>&lt;</span>
             </router-link>
             <span class="title">影院</span>
             <span class="search">搜索</span>
@@ -25,7 +25,7 @@
 import {mapState} from 'vuex'
 export default {
     computed: {
-        ...mapState(['count','city']) // 扩展运算符...
+        ...mapState(['count','city','cityId']) // 扩展运算符...
     },
 }
 </script>
@@ -36,7 +36,6 @@ export default {
     height: 80px;
     line-height: 40px;
     border-bottom: 1px solid #ccc;
-    // position: fixed;
     .topBox{
         height: 30px;
         font-size: 14px;

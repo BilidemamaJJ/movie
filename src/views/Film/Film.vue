@@ -1,6 +1,7 @@
 <template>
     <div>
-        <FilmListTopNav :class="fixed ? 'fixed' : ''"></FilmListTopNav>
+        <!-- <FilmListTopNav :class="fixed ? 'fixed' : ''"></FilmListTopNav> -->
+        <FilmListTopNav class="fixed"></FilmListTopNav>
         <router-view></router-view>
     </div>
 </template>
@@ -34,7 +35,8 @@ export default {
     .fixed {
         position: fixed;
         top: 0;
-        background: red;
+        z-index: 123;
+        background: #fff;
       //  transition: .5s;
     }
 </style>

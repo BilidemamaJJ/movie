@@ -1,5 +1,6 @@
 <template>
-    <div class="bg">
+    <div class="bg scroll"  :style="{height:height + 'px'}">
+        <div>
         <div class="film-header">
             <div class="goBack" @click="goBack()">
                 <img
@@ -38,12 +39,13 @@
 
             <div class="dramaposter">
                 <p>剧照：</p>
-                <Swiper1 :key="'dramaposter_' + detail.photos.length">
+                <Swiper :key="'dramaposter_' + detail.photos.length">
                     <div v-for="(item,index) in detail.photos" :key="index" class="swiper-slide poster">
                         <img v-lazy="item" alt="">
                     </div>
-                </Swiper1>
+                </Swiper>
             </div>
+        </div>
         </div>
     </div>
 </template>
@@ -54,6 +56,8 @@ import Loading from "@/components/Loading"
 import Swiper from "@/components/Swiper"
 import Swiper1 from "@/components/Swiper1"
 import {movieDetailData} from "@/api/api"
+import BScroll from "better-scroll"
+
 export default {
     data() {
         return {
@@ -82,6 +86,17 @@ export default {
     created() {
         // 发起通知，通知app.vue组件移出底部菜单
         this.eventBus.$emit('footernav',false)
+        this.height = document.documentElement.clientHeight
+    },
+    updated() {
+        this.bs = new BScroll('.scroll',{
+            // 激活上滑的监听事件
+            pullUpLoad: true,
+            // 激活下滑的监听事件
+            // pullDownRefresh: true,
+            // 默认情况下使用bs后，它会禁止浏览器的点击事件
+            click: true,
+        })
     },
     beforeDestroy() {
         // 发起通知，通知app.vue组件恢复底部菜单
@@ -94,6 +109,9 @@ export default {
 *{
     margin: 0;
     padding: 0;
+}
+.scroll{
+    overflow: hidden;
 }
 .bg{
     background: #f5f5f5;
