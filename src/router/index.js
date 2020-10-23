@@ -12,6 +12,7 @@ import vuexRouter from "./routes/vuex"
 import loginRouter from "./routes/login"
 import logOutRouter from "./routes/logout"
 import settingRouter from "./routes/setting"
+import cinemaDetailRouter from "./routes/cinemadetail"
 
 
 const routes = [
@@ -28,6 +29,7 @@ const routes = [
   loginRouter,
   logOutRouter,
   settingRouter,
+  cinemaDetailRouter,
 ]
 
 const router = new VueRouter({

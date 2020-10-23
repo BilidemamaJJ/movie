@@ -12,7 +12,7 @@ axios.interceptors.request.use(function(config){
     if(info == "film"){
         host = "mall.film-ticket.film.list"
     }
-    if(info =="cinema"){
+    if(info =="cinemaList"){
         host = "mall.film-ticket.cinema.list"
     }
     if(info == "info"){
@@ -20,6 +20,12 @@ axios.interceptors.request.use(function(config){
     }
     if(info == "city"){
         host = "mall.film-ticket.city.list"
+    }
+    if(info == "cinemaDetail"){
+        host = "mall.film-ticket.cinema.info"
+    }
+    if(info == "cinemaFilmDetail"){
+        host = "mall.film-ticket.film.cinema-show-film"
     }
 
     if(config.headers.authorization){

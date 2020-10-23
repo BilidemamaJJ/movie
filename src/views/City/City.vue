@@ -21,7 +21,10 @@
             <div>
                 <div class="hot-city">
                     <span>GPS定位所在城市</span>
-                    <span class="cityGPS-HOT" @click="chooseCityGPS(cityGPS)">{{cityGPS}}</span>
+                    <div>
+                        <!-- <span class="cityGPS-HOT">{{cityGPS}}</span> -->
+                        <span class="cityGPS-HOT" style="width:150px;">别点，点了也没用</span>
+                    </div>
                     <span>热门城市</span>
                     <div class="HotCities">
                         <span class="cityGPS-HOT" v-for="(item,index) in hotList" :key="index" @click="chooseCity(item)">
@@ -41,11 +44,13 @@
 </template>
 
 <script>
-import {cityListData} from "@/api/api"
+import {cityListData , setCityGPS} from "@/api/api"
 import Vue from "vue";
 import "vant/lib/index.css"
 import { IndexBar, IndexAnchor, Cell } from "vant";
 import BScroll from "better-scroll"
+import axios from 'axios'
+import {mapState} from 'vuex'
 
 Vue.use(IndexBar);
 Vue.use(IndexAnchor);
@@ -56,13 +61,17 @@ export default {
         return {
             dataList: [],
             indexList: [],
-            cityGPS:'定位失败',
+            cityGPS:'定位中...',
             hotList:[],
+            lat: '121.49124909851835',
+            lag: '31.379142696763655',
+            cityGPSData: [],
         }
     },
     created() {
         this.eventBus.$emit('footernav',false)
         this.height = document.documentElement.clientHeight
+
     },
     async mounted() {
         let ret = await cityListData();
@@ -71,55 +80,72 @@ export default {
         // console.log(this.dataList);
         
         this.hotList = ret[2];
-        console.log(this.hotList);
+        // http.get(`https://api.i-lynn.cn/poi?location=${lag},${lat}`)
 
-        var _this = this;
+        // http.get(`https://api.i-lynn.cn/poi?location=121.49124909851835,31.379142696763655`).then((msgGPS)=>{
+        //     console.log(msgGPS.data.regeocode.addressComponent.district,msgGPS.data.regeocode.addressComponent.adcode);
+        //     let citySetGPS = msgGPS.data.regeocode.addressComponent.district;
+        // })
+
+        // let msgGPS = await setCityGPS()
+        // this.cityGPSData = await msgGPS.data.regeocode.addressComponent
+        // this.cityGPS = await this.cityGPSData.district
+        // this.cityGPSId = await this.cityGPSData.adcode
+        // console.log(this.dataList);
+
+        // var queryData = this.dataList.filter(function(data){
+        //     // return data.cityId === msgGPS.data.regeocode.addressComponent.adcode
+        //     return data.data.cityId === '110100'
+        // })
+        // console.log(queryData);
+
+        // var _this = this;
         // console.log(_this.cityGPS);
-        if (navigator.geolocation){ 
-            // navigator.geolocation.getCurrentPosition( showPosition, geoError); 
-            // console.log(navigator.geolocation);
-            // 支持
-            console.log("支持地理位置接口");
-            // console.log(lat,lag);
+        // if (navigator.geolocation){ 
+        //     navigator.geolocation.getCurrentPosition( showPosition, geoError); 
+        //     // console.log(navigator.geolocation);
+        //     // 支持
+        //     console.log("支持地理位置接口");
+        //     // console.log(lat,lag);
 
-        } else { 
-            // alert( "浏览器不支持地理定位。" ); 
-            // 不支持
-            console.log("不支持地理位置接口");
-        } 
+        // } else { 
+        //     // alert( "浏览器不支持地理定位。" ); 
+        //     // 不支持
+        //     console.log("不支持地理位置接口");
+        // } 
 
-        function  showPosition(position){
-            var  lat = position.coords.latitude;  //纬度 
-            var  lag = position.coords.longitude;  //经度 
-            console.log(
-                lat,lag
-            );
-            // axios.get(`https://api.i-lynn.cn/poi?location=${lag},${lat}`).then((ret)=>{
-            //     _this.cityGPS = ret.data.regeocode.addressComponent.province
-            //     // console.log(_this.cityGPS);
-	        //     _this.$store.commit('setCity',ret.data.regeocode.addressComponent.province)
-            // })
-            alert(`纬度:`+position.coords.latitude + ', ' +`经度:`+ position.coords.longitude);
-        }
+        // function showPosition(position){
+        //     var lat = 121.49124909851835;  //纬度 
+        //     var lag = 31.379142696763655;  //经度 
+        //     console.log(
+        //         lat,lag
+        //     );
+        //     axios.get(`https://api.i-lynn.cn/poi?location=${lag},${lat}`).then((ret)=>{
+        //         _this.cityGPS = ret.data.regeocode.addressComponent.province
+        //         // console.log(_this.cityGPS);
+	    //         _this.$store.commit('setCity',ret.data.regeocode.addressComponent.province)
+        //     })
+        //     alert(`纬度:`+position.coords.latitude + ', ' +`经度:`+ position.coords.longitude);
+        // }
 
-        function geoError(error) {
-                console.log(error)
-                console.log("Error code " + error.code + ". " + error.message);
-                switch (error.code) {
-                    case error.PERMISSION_DENIED:
-                        alert("定位失败,用户拒绝请求地理定位");
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        alert("定位失败,位置信息是不可用");
-                        break;
-                    case error.TIMEOUT:
-                        alert("定位失败,请求获取用户位置超时");
-                        break;
-                    case error.UNKNOWN_ERROR:
-                        alert("定位失败,定位系统失效");
-                        break;
-                }
-            }
+        // function geoError(error) {
+        //         console.log(error)
+        //         console.log("Error code " + error.code + ". " + error.message);
+        //         switch (error.code) {
+        //             case error.PERMISSION_DENIED:
+        //                 alert("定位失败,用户拒绝请求地理定位");
+        //                 break;
+        //             case error.POSITION_UNAVAILABLE:
+        //                 alert("定位失败,位置信息是不可用");
+        //                 break;
+        //             case error.TIMEOUT:
+        //                 alert("定位失败,请求获取用户位置超时");
+        //                 break;
+        //             case error.UNKNOWN_ERROR:
+        //                 alert("定位失败,定位系统失效");
+        //                 break;
+        //         }
+        //     }
     },
     updated() {
         this.bs = new BScroll('.scroll',{

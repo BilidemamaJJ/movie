@@ -2,7 +2,8 @@
     <div class="nav">
         <div class="topBox">
             <router-link to="/city" tag="div" class="loca">
-                {{city}}<span>&lt;</span>
+                <div v-if="city">{{city}}<span>&lt;</span></div>
+                <div v-else>当前 {{cityGPS}}<span>&lt;</span></div>
             </router-link>
             <span class="title">影院</span>
             <span class="search">搜索</span>
@@ -23,9 +24,30 @@
 
 <script>
 import {mapState} from 'vuex'
+import {cityListData , setCityGPS} from "@/api/api"
+
 export default {
+    data() {
+        return {
+            cityGPS:'定位中',
+            cityGPSData: [],
+        }
+    },
     computed: {
         ...mapState(['count','city','cityId']) // 扩展运算符...
+    },
+    async mounted() {
+        let msgGPS = await setCityGPS()
+        this.cityGPSData = await msgGPS.data.regeocode.addressComponent
+        this.cityGPS = await this.cityGPSData.district
+        this.cityGPSId = await this.cityGPSData.adcode
+        // console.log(this.dataList);
+
+        // var queryData = this.dataList.filter(function(data){
+        //     // return data.cityId === msgGPS.data.regeocode.addressComponent.adcode
+        //     return data.data.cityId === '110100'
+        // })
+        // console.log(queryData);
     },
 }
 </script>

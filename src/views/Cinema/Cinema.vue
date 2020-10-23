@@ -4,7 +4,7 @@
         <CinemaListTopNav class="fixed"></CinemaListTopNav>
         <div class="scroll" :style="{height:height + 'px'}">
             <ul class="cinemalists">
-            <li v-for="(item,index) in cinemas" :key="index" :class="{bgcolor:i === index}" @click="clickli(item,index)">
+            <li v-for="(item,index) in cinemas" :key="index" :class="{bgcolor:i === index}" @click="goToDetail(item.cinemaId,index)">
                 <div class="nap">
                     <span class="name">{{item.name}}</span>
                     <span class="price">￥<i>{{item.lowPrice / 100}}</i>起</span>
@@ -72,13 +72,14 @@ export default {
     },
     filters:{
         parseDistance: function(value){
-            return Math.ceil(value*100)/100
+            return Math.ceil(value*100)/10
         }
     },
     
     methods: {
-        clickli: function(item,index){
+        goToDetail: function(cinemaId,index){
             this.i = index;
+            this.$router.push({name:'cinemadetail',params:{cinemaId}})
         }
     },
 }

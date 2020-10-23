@@ -1,7 +1,7 @@
 //  调用封装的`axios`  发送具体的数据请求
 //导入需要使用的模块
 import http from '@/api/http' 
-import { playingNowListUrl , comingSoonListUrl , movieDetailUrl,cinemaUrl,cityListUrl,loginUrl,centerUserInfoUrl} from "@/config/url"
+import { playingNowListUrl , comingSoonListUrl , movieDetailUrl , cinemaUrl , cityListUrl , loginUrl , centerUserInfoUrl , cityGPSUrl , cinemaDetailUrl , cinemaFilmDetailUrl} from "@/config/url"
 
 // 请求正在热映列表
 export const playingNowListData = (pageNum)=>{
@@ -24,9 +24,9 @@ export const movieDetailData = (filmId)=>{
     return http.get(movieDetailUrl + filmId)
 }
 
-// 请求影院页
+// 请求影院列表页
 export const cinemaData = (cityId)=>{
-    http.defaults.headers.info = 'cinema'
+    http.defaults.headers.info = 'cinemaList'
     http.defaults.headers.authorization = "";
     return http.get(cinemaUrl + cityId)
 }
@@ -85,4 +85,22 @@ export const centerUserInfoData = (_token)=>{
     //     // 对错误的处理
     // })
     return http.get(centerUserInfoUrl)
+}
+
+// 请求GPS定位城市
+export const setCityGPS = ()=>{
+    return http.get(cityGPSUrl)
+}
+
+// 请求影院详情页数据
+export const cinemaDetailData = (cinemaId)=>{
+    http.defaults.headers.info = 'cinemaDetail'
+    http.defaults.headers.authorization = "";
+    return http.get(cinemaDetailUrl + cinemaId)
+}
+// 请求影院详情页电影的数据
+export const cinemaFilmDetailData = (cinemaId)=>{
+    http.defaults.headers.info = 'cinemaFilmDetail'
+    http.defaults.headers.authorization = "";
+    return http.get(cinemaFilmDetailUrl + cinemaId)
 }

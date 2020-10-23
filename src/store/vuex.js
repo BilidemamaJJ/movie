@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import cinema from '../router/routes/cinema';
 
 Vue.use(Vuex)
 
@@ -7,8 +8,10 @@ export default new Vuex.Store({
     state: {
         // state 存数据 取数据
         count: 0,
-        city: '未知城市',
-        cityId:'110100',
+        city: '',
+        cityId:'310100',
+        citySetGPS: '定位中',
+        cinemaFilmId:0,
     },
     mutations:{
         // 对数据的更改操作，修改作用
@@ -21,6 +24,8 @@ export default new Vuex.Store({
         setCity(state,sub){
             state.city = sub.name
             state.cityId = sub.cityId
+            state.cityGPS = sub.name
+
         },
         updateToken(state,_token){
             state._token = _token
@@ -30,6 +35,9 @@ export default new Vuex.Store({
             state._token  = '';
             window.localStorage.removeItem('_token')
         },
+        setCinemaFilmId(state,_index){
+            state.cinemaFilmId = _index;
+        }
         // getCurrentPosition(state,position){
 
         // }
@@ -40,7 +48,7 @@ export default new Vuex.Store({
             setTimeout(()=>{
                 context.commit('add',step)
             },2000)
-        }
+        },
     },
     getters:{
         // state中的数据发生变化，getters中的数据也会随之变化
